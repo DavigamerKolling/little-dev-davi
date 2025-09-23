@@ -1,0 +1,8 @@
+Site de Gestão de Material Didático:
+
+1. Local para ter plano de curso por áreas e planos de aulas:
+- Colocar nome, área, disciplina, data de postagem, filtros por disciplinas, áreas, módulos, técnico e tipo de curso e nesses filtros podem ter professores. 
+
+2. Visualização do cliente que seja organizado com ícones e texto simples.
+
+3. Opção de mudar fundo para escuro e claro nas configurações do site.
