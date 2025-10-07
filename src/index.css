@@ -1,0 +1,64 @@
+.navbar {
+    background-color: #0a2a6b;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 25px;
+    font-family: Arial, sans-serif;
+  }
+  
+  .nav-left {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  
+  .menu-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 22px;
+    cursor: pointer;
+  }
+  
+  .logo {
+    display: flex;
+    flex-direction: column;
+    line-height: 1;
+  }
+  
+  .logo .sistema {
+    font-size: 12px;
+  }
+  
+  .logo .senai {
+    font-weight: bold;
+    font-size: 18px;
+  }
+  
+  .nav-left h1 {
+    font-size: 18px;
+    font-weight: normal;
+    border-left: 1px solid #ffffff55;
+    padding-left: 15px;
+  }
+  
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+  
+  .icon {
+    cursor: pointer;
+    font-size: 20px;
+  }
+  
+  .user-icon {
+    width: 32px;
+    height: 32px;
+    background-color: #d9d9d9;
+    border-radius: 50%;
+  }
+  
