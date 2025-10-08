@@ -1,64 +1,85 @@
 .navbar {
-    background-color: #0a2a6b;
-    color: white;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 25px;
-    font-family: Arial, sans-serif;
-  }
-  
-  .nav-left {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-  }
-  
-  .menu-btn {
-    background: none;
-    border: none;
-    color: white;
-    font-size: 22px;
-    cursor: pointer;
-  }
-  
-  .logo {
-    display: flex;
-    flex-direction: column;
-    line-height: 1;
-  }
-  
-  .logo .sistema {
-    font-size: 12px;
-  }
-  
-  .logo .senai {
-    font-weight: bold;
-    font-size: 18px;
-  }
-  
-  .nav-left h1 {
-    font-size: 18px;
-    font-weight: normal;
-    border-left: 1px solid #ffffff55;
-    padding-left: 15px;
-  }
-  
-  .nav-right {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-  }
-  
-  .icon {
-    cursor: pointer;
-    font-size: 20px;
-  }
-  
-  .user-icon {
-    width: 32px;
-    height: 32px;
-    background-color: #d9d9d9;
-    border-radius: 50%;
-  }
-  
+  background-color: #0a2a6b;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 25px;
+  font-family: Arial, sans-serif;
+}
+
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.menu-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+.nav-left h1 {
+  font-size: 18px;
+  font-weight: normal;
+  border-left: 1px solid #ffffff55;
+  padding-left: 15px;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  background-color: #ffffff;
+  border-radius: 20px;
+  padding: 3px 10px;
+  height: 32px;
+}
+
+.search-input {
+  border: none;
+  outline: none;
+  background: none;
+  padding: 5px 8px;
+  width: 140px;
+  font-size: 14px;
+}
+
+.search-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.search-icon {
+  width: 22px;
+  height: 22px;
+  filter: brightness(0);
+}
+
+.nav-icon {
+  cursor: pointer;
+  width: 40px;
+  height: 60px;
+  transition: transform 0.2s;
+}
+
+.nav-icon:hover {
+  transform: scale(1.1);
+}
+
+.user-icon {
+  width: 32px;
+  height: 32px;
+  background-color: #d9d9d9;
+  border-radius: 50%;
+}
