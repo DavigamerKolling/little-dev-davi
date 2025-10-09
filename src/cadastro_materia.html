@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cadastro de Matéria - SENAI</title>
+  <link rel="stylesheet" href="index.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="navbar">
+    <div class="nav-left">
+      <button class="menu-btn">☰</button>
+      <img src="./Logos - Sistema Fiep RGB_BRANCO_SENAI.png" alt="Logo SENAI" class="logo-img">
+      <h1>Cadastro de Matéria</h1>
+    </div>
+
+    <div class="nav-right">
+      <div class="search-box">
+        <input type="text" placeholder="Pesquisar..." class="search-input">
+        <button class="search-btn">
+          <img src="https://cdn-icons-png.flaticon.com/512/4078/4078029.png" alt="Buscar" class="search-icon">
+        </button>
+      </div>
+      <img src="https://cdn-icons-png.flaticon.com/512/1827/1827312.png" alt="Notificações" class="nav-icon">
+      <img src="https://uxwing.com/wp-content/themes/uxwing/download/communication-chat-call/two-speech-bubbles-icon.png" alt="Mensagens" class="nav-icon">
+      <img src="https://cdn-icons-png.flaticon.com/512/9187/9187604.png" alt="Usuário" class="user-icon">
+    </div>
+  </header>
+
+  <nav class="side-menu" id="sideMenu">
+    <ul>
+      <li>Suas Aulas</li>
+      <li>Seus Artigos</li>
+      <li>Seus Livros</li>
+      <li>Seus Arquivos</li>
+      <li>Calendário</li>
+      <li>Professores</li>
+      <li>Eventos</li>
+      <li>Configurações</li>
+      <li class="logout">Sair</li>
+    </ul>
+  </nav>
+
+  <main class="container">
+    <h2>Cadastro de Matéria</h2>
+    <form class="cadastro-form" enctype="multipart/form-data">
+      <label for="nomeMateria">Nome da Matéria:</label>
+      <input type="text" id="nomeMateria" placeholder="Ex: Português" required>
+
+      <label for="imagemMateria">Upload:</label>
+      <input type="file" id="imagemMateria" accept="image/*" required>
+
+      <button type="submit" class="btn-salvar">Salvar</button>
+    </form>
+  </main>
+
+  <script>
+    const menuBtn = document.querySelector(".menu-btn");
+    const sideMenu = document.getElementById("sideMenu");
+
+    menuBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      sideMenu.classList.toggle("open");
+    });
+
+    document.addEventListener("click", (e) => {
+      if (sideMenu.classList.contains("open") && !sideMenu.contains(e.target) && !menuBtn.contains(e.target)) {
+        sideMenu.classList.remove("open");
+      }
+    });
+  </script>
+</body>
+</html>

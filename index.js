@@ -3,10 +3,10 @@ const mysql = require("mysql2");
 const path = require("path");
 
 const app = express();
-const PORT = 3000;
+const PORT = 8080;
 
 app.use(express.json());
-app.use(express.static(path.join(__dirname, "public"))); // Servir o frontend (HTML, CSS, JS)
+app.use(express.static(path.join(__dirname, "src"))); // Servir o frontend (HTML, CSS, JS)
 
 const db = mysql.createConnection({
   host: "localhost",
@@ -59,6 +59,10 @@ app.post("/api/aulas", (req, res) => {
   );
 });
 
+app.get("/", (req,res) =>{
+  res.sendFile(path.join(__dirname, "index.html" ))
+});
+
 app.listen(PORT, () => {
-  console.log(`🚀 Servidor rodando em: http://localhost:$8080`);
+  console.log(`🚀 Servidor rodando em: http://localhost:8080`);
 });

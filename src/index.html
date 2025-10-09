@@ -23,12 +23,25 @@
         </button>
       </div>
 
-      <!-- Ícones -->
       <img src="https://cdn-icons-png.flaticon.com/512/1827/1827312.png" alt="Notificações" class="nav-icon">
       <img src="https://uxwing.com/wp-content/themes/uxwing/download/communication-chat-call/two-speech-bubbles-icon.png" alt="Mensagens" class="nav-icon">
       <img src="https://cdn-icons-png.flaticon.com/512/9187/9187604.png" alt="Usuário" class="user-icon">
     </div>
   </header>
+
+<nav class="side-menu" id="sideMenu">
+  <ul>
+    <li>Suas Aulas</li>
+    <li>Seus Artigos</li>
+    <li>Seus Livros</li>
+    <li>Seus Arquivos</li>
+    <li>Calendário</li>
+    <li>Professores</li>
+    <li>Eventos</li>
+    <li>Configurações</li>
+    <li class="logout">Sair</li>
+  </ul>
+</nav>
 
   <main class="container">
     <h2>Escolha a Matéria</h2>
@@ -78,10 +91,46 @@
         <p>Educação Física</p>
       </div>
 
-      <div class="card add-card">
+      <div class="card add-card" onclick="window.location.href='cadastro_materia.html'">
         <span>+</span>
-      </div>
+      </div>      
     </div>
   </main>
+  <script>
+    const searchInput = document.querySelector(".search-input");
+    const cards = document.querySelectorAll(".card");
+  
+    searchInput.addEventListener("input", () => {
+      const termo = searchInput.value.toLowerCase();
+  
+      cards.forEach(card => {
+        const nomeElemento = card.querySelector("p"); // verifica se existe
+        const nomeMateria = nomeElemento ? nomeElemento.textContent.toLowerCase() : "";
+  
+        if (nomeMateria.includes(termo) || termo === "") {
+          card.style.display = "block";
+        } else {
+          card.style.display = "none";
+        }
+      });
+    });
+  </script> 
+
+<script>
+  const menuBtn = document.querySelector(".menu-btn");
+  const sideMenu = document.getElementById("sideMenu");
+
+  menuBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    sideMenu.classList.toggle("open");
+  });
+
+  document.addEventListener("click", (e) => {
+    if (sideMenu.classList.contains("open") && !sideMenu.contains(e.target) && !menuBtn.contains(e.target)) {
+      sideMenu.classList.remove("open");
+    }
+  });
+</script>
+
 </body>
 </html>
