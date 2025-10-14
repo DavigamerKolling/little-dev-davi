@@ -117,3 +117,192 @@ body {
 .btn-salvar:hover {
   background-color: #0C92FF;
 }
+
+/* ===== MATERIAIS ===== */
+.materiais-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.material-card {
+  background-color: #e5e5e5;
+  border-radius: 10px;
+  padding: 15px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease, background-color 0.3s ease;
+}
+
+.material-card:hover {
+  background-color: #d8e2ff;
+  transform: scale(1.02);
+}
+
+.material-icon {
+  width: 60px;
+  height: 60px;
+  margin-right: 20px;
+}
+
+.material-info {
+  flex: 1;
+  text-align: left;
+}
+
+.material-info h3 {
+  margin: 0;
+  font-size: 18px;
+  color: #0a2a6b;
+}
+
+.material-info p {
+  margin: 5px 0 0;
+  color: #333;
+  font-size: 14px;
+}
+
+.btn-baixar {
+  background-color: #0a2a6b;
+  color: white;
+  padding: 8px 15px;
+  text-decoration: none;
+  border-radius: 5px;
+  font-size: 14px;
+  transition: background-color 0.2s ease;
+}
+
+.btn-baixar:hover {
+  background-color: #133b8b;
+}
+
+.voltar {
+  display: block;
+  text-align: left;
+  margin-bottom: 10px;
+  color: black;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.voltar:hover {
+  text-decoration: underline;
+}
+
+.materia-select {
+  display: block;
+  margin: 0 auto 30px auto;
+  background-color: #d9d9d9;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  width: 250px;
+  font-size: 15px;
+  text-align: center;
+  color: #555;
+  cursor: pointer;
+}
+
+.materiais-lista {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.material-card {
+  background-color: #d9d9d9;
+  width: 350px;
+  border-radius: 8px;
+  padding: 12px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 16px;
+  font-weight: bold;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.material-card .icons i {
+  margin-left: 15px;
+  font-size: 20px;
+  cursor: pointer;
+  color: black;
+  transition: transform 0.2s;
+}
+
+.material-card .icons i:hover {
+  transform: scale(1.1);
+  color: #0a2a6b;
+}
+
+/* botão + */
+.add-card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #a7a7a7;
+  width: 350px;
+  height: 50px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 28px;
+  font-weight: bold;
+  color: white;
+}
+
+.add-card:hover {
+  background-color: #8f8f8f;
+}
+
+.form-material {
+  max-width: 400px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.form-material input,
+.form-material select {
+  background-color: #d9d9d9;
+  border: none;
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 15px;
+  font-family: "Segoe UI", Arial, sans-serif;
+  color: #000;
+  outline: none;
+  text-align: left;
+  transition: background-color 0.2s;
+}
+
+.form-material input::placeholder {
+  color: #666;
+}
+
+.form-material input:focus,
+.form-material select:focus {
+  background-color: #cfcfcf;
+}
+
+.btn-salvar-azul {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  width: 150px;
+  align-self: center;
+}
+
+.btn-salvar-azul:hover {
+  background-color: #005fcc;
+}

@@ -3,7 +3,8 @@ USE plataforma_cursos;
 
 CREATE TABLE materias (
     id_materia INT AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(100) NOT NULL
+    nome VARCHAR(100) NOT NULL,
+    imagem VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE aulas (

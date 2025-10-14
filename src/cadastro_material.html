@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cadastro de Matéria - SENAI</title>
+  <title>Cadastro de Material - SENAI</title>
   <link rel="stylesheet" href="index.css">
   <link rel="stylesheet" href="style.css">
 </head>
@@ -12,7 +12,7 @@
     <div class="nav-left">
       <button class="menu-btn">☰</button>
       <img src="./Logos - Sistema Fiep RGB_BRANCO_SENAI.png" alt="Logo SENAI" class="logo-img">
-      <h1>Cadastro de Matéria</h1>
+      <h1>Planos de Cursos</h1>
     </div>
 
     <div class="nav-right">
@@ -30,11 +30,9 @@
 
   <nav class="side-menu" id="sideMenu">
     <ul>
-      <li>Suas Aulas</li>
-      <li>Seus Artigos</li>
       <li onclick="window.location.href='materiais.html'">Seus Livros</li>
       <li onclick="window.location.href='materiais.html'">Seus Slides</li>
-      <li onclick="window.location.href='materiais.html'">Seus Arquivos</li>  
+      <li onclick="window.location.href='materiais.html'">Seus Arquivos</li>
       <li>Calendário</li>
       <li>Professores</li>
       <li>Eventos</li>
@@ -44,15 +42,37 @@
   </nav>
 
   <main class="container">
-    <h2>Cadastro de Matéria</h2>
-    <form class="cadastro-form" enctype="multipart/form-data">
-      <label for="nomeMateria">Nome da Matéria:</label>
-      <input type="text" id="nomeMateria" placeholder="Ex: Português" required>
+    <a href="materiais.html" class="voltar">&larr; Voltar</a>
+    <h2>Cadastro de Material</h2>
 
-      <label for="imagemMateria">Upload:</label>
-      <input type="file" id="imagemMateria" accept="image/*" required>
+    <form class="form-material">
+      <input type="text" placeholder="Título" required>
 
-      <button type="submit" class="btn-salvar">Salvar</button>
+      <select required>
+        <option disabled selected>Escolha a Matéria</option>
+        <option>Português</option>
+        <option>Matemática</option>
+        <option>Biologia</option>
+        <option>Química</option>
+        <option>Física</option>
+        <option>Inglês</option>
+        <option>História</option>
+        <option>Geografia</option>
+        <option>Educação Física</option>
+      </select>
+
+      <input type="text" placeholder="Professor" required>
+
+      <select required>
+        <option disabled selected>Escolha a área</option>
+        <option>Exatas</option>
+        <option>Humanas</option>
+        <option>Biológicas</option>
+      </select>
+
+      <input type="text" placeholder="DD/MM/AAAA" required>
+
+      <button type="submit" class="btn-salvar-azul">Salvar</button>
     </form>
   </main>
 
