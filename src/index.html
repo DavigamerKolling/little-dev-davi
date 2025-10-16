@@ -29,6 +29,8 @@
     </div>
   </header>
 
+  <div id="pageOverlay" class="overlay"></div>
+  
 <nav class="side-menu" id="sideMenu">
   <ul>
     <li>Suas Aulas</li>
@@ -92,9 +94,9 @@
         <p>Educação Física</p>
       </div>
 
-      <div class="card add-card" onclick="window.location.href='cadastro_materia.html'">
+      <div class="card add-card-materia" onclick="window.location.href='cadastro_materia.html'">
         <span>+</span>
-      </div>          
+      </div>              
     </div>
   </main>
   <script>
@@ -120,15 +122,47 @@
 <script>
   const menuBtn = document.querySelector(".menu-btn");
   const sideMenu = document.getElementById("sideMenu");
+  const overlay = document.getElementById("pageOverlay"); // camada escura atrás do menu
 
+  // Funções para abrir/fechar menu e overlay
+  function openMenu() {
+    sideMenu.classList.add("open");
+    overlay.classList.add("show");
+  }
+
+  function closeMenu() {
+    sideMenu.classList.remove("open");
+    overlay.classList.remove("show");
+  }
+
+  // Clique no botão ☰
   menuBtn.addEventListener("click", (e) => {
     e.stopPropagation();
-    sideMenu.classList.toggle("open");
+    if (sideMenu.classList.contains("open")) {
+      closeMenu();
+    } else {
+      openMenu();
+    }
   });
 
+  // Clique fora do menu → fecha
   document.addEventListener("click", (e) => {
-    if (sideMenu.classList.contains("open") && !sideMenu.contains(e.target) && !menuBtn.contains(e.target)) {
-      sideMenu.classList.remove("open");
+    if (
+      sideMenu.classList.contains("open") &&
+      !sideMenu.contains(e.target) &&
+      !menuBtn.contains(e.target)
+    ) {
+      closeMenu();
+    }
+  });
+
+  // Clique na área escurecida → fecha
+  overlay.addEventListener("click", closeMenu);
+
+  // Pressionar tecla ESC → fecha
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      closeMenu();
     }
   });
 </script>

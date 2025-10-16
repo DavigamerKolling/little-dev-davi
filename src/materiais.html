@@ -29,6 +29,8 @@
     </div>
   </header>
 
+  <div id="pageOverlay" class="overlay"></div>
+  
   <nav class="side-menu" id="sideMenu">
     <ul>
       <li onclick="window.location.href='materiais.html'">Seus Livros</li>
@@ -87,24 +89,51 @@
         </div>
       </div>
 
-      <div class="material-card add-card" onclick="window.location.href='cadastro_material.html'">
+      <div class="material-card add-card-material" onclick="window.location.href='cadastro_material.html'">
         <span>+</span>
-      </div>
+      </div>      
     </div>
   </main>
 
   <script>
     const menuBtn = document.querySelector(".menu-btn");
     const sideMenu = document.getElementById("sideMenu");
-
+    const overlay = document.getElementById("pageOverlay");
+  
+    function openMenu() {
+      sideMenu.classList.add("open");
+      overlay.classList.add("show");
+    }
+  
+    function closeMenu() {
+      sideMenu.classList.remove("open");
+      overlay.classList.remove("show");
+    }
+  
     menuBtn.addEventListener("click", (e) => {
       e.stopPropagation();
-      sideMenu.classList.toggle("open");
+      if (sideMenu.classList.contains("open")) {
+        closeMenu();
+      } else {
+        openMenu();
+      }
     });
-
+  
     document.addEventListener("click", (e) => {
-      if (sideMenu.classList.contains("open") && !sideMenu.contains(e.target) && !menuBtn.contains(e.target)) {
-        sideMenu.classList.remove("open");
+      if (
+        sideMenu.classList.contains("open") &&
+        !sideMenu.contains(e.target) &&
+        !menuBtn.contains(e.target)
+      ) {
+        closeMenu();
+      }
+    });
+  
+    overlay.addEventListener("click", closeMenu);
+  
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        closeMenu();
       }
     });
   </script>

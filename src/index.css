@@ -127,3 +127,19 @@
 .side-menu.open {
   left: 0;
 }
+
+.overlay {
+  position: fixed;
+  inset: 0;                     
+  background: rgba(0, 0, 0, 0.35);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s ease, visibility 0.25s;
+  z-index: 900;                 
+}
+
+/* quando visível */
+.overlay.show {
+  opacity: 1;
+  visibility: visible;
+}

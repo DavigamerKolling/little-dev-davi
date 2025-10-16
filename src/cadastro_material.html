@@ -28,6 +28,8 @@
     </div>
   </header>
 
+  <div id="pageOverlay" class="overlay"></div>
+  
   <nav class="side-menu" id="sideMenu">
     <ul>
       <li onclick="window.location.href='materiais.html'">Seus Livros</li>
@@ -72,6 +74,8 @@
 
       <input type="text" placeholder="DD/MM/AAAA" required>
 
+      <input type="file" id="fileUpload" class="input-cinza file-input" accept=".pdf,.doc,.docx,.ppt,.pptx,.jpg,.png" required>
+
       <button type="submit" class="btn-salvar-azul">Salvar</button>
     </form>
   </main>
@@ -79,15 +83,42 @@
   <script>
     const menuBtn = document.querySelector(".menu-btn");
     const sideMenu = document.getElementById("sideMenu");
-
+    const overlay = document.getElementById("pageOverlay");
+  
+    function openMenu() {
+      sideMenu.classList.add("open");
+      overlay.classList.add("show");
+    }
+  
+    function closeMenu() {
+      sideMenu.classList.remove("open");
+      overlay.classList.remove("show");
+    }
+  
     menuBtn.addEventListener("click", (e) => {
       e.stopPropagation();
-      sideMenu.classList.toggle("open");
+      if (sideMenu.classList.contains("open")) {
+        closeMenu();
+      } else {
+        openMenu();
+      }
     });
-
+  
     document.addEventListener("click", (e) => {
-      if (sideMenu.classList.contains("open") && !sideMenu.contains(e.target) && !menuBtn.contains(e.target)) {
-        sideMenu.classList.remove("open");
+      if (
+        sideMenu.classList.contains("open") &&
+        !sideMenu.contains(e.target) &&
+        !menuBtn.contains(e.target)
+      ) {
+        closeMenu();
+      }
+    });
+  
+    overlay.addEventListener("click", closeMenu);
+  
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        closeMenu();
       }
     });
   </script>
