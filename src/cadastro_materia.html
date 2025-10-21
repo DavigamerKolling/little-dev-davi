@@ -11,7 +11,7 @@
   <header class="navbar">
     <div class="nav-left">
       <button class="menu-btn">☰</button>
-      <img src="./Logos - Sistema Fiep RGB_BRANCO_SENAI.png" alt="Logo SENAI" class="logo-img">
+      <img src="./Logos - Sistema Fiep RGB_BRANCO_SENAI.png" alt="Logo SENAI" class="logo-img" onclick="window.location.href='index.html'">
       <h1>Cadastro de Matéria</h1>
     </div>
 
@@ -58,47 +58,7 @@
     </form>
   </main>
 
-  <script>
-    const menuBtn = document.querySelector(".menu-btn");
-    const sideMenu = document.getElementById("sideMenu");
-    const overlay = document.getElementById("pageOverlay");
-  
-    function openMenu() {
-      sideMenu.classList.add("open");
-      overlay.classList.add("show");
-    }
-  
-    function closeMenu() {
-      sideMenu.classList.remove("open");
-      overlay.classList.remove("show");
-    }
-  
-    menuBtn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      if (sideMenu.classList.contains("open")) {
-        closeMenu();
-      } else {
-        openMenu();
-      }
-    });
-  
-    document.addEventListener("click", (e) => {
-      if (
-        sideMenu.classList.contains("open") &&
-        !sideMenu.contains(e.target) &&
-        !menuBtn.contains(e.target)
-      ) {
-        closeMenu();
-      }
-    });
-  
-    overlay.addEventListener("click", closeMenu);
-  
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") {
-        closeMenu();
-      }
-    });
-  </script>
+  <script src="script.js"></script>
+
 </body>
 </html>

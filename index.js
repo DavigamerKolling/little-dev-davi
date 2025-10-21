@@ -1,68 +1,89 @@
 const express = require("express");
 const mysql = require("mysql2");
 const path = require("path");
+const multer = require("multer");
 
 const app = express();
 const PORT = 8080;
 
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
+
 app.use(express.json());
-app.use(express.static(path.join(__dirname, "src"))); // Servir o frontend (HTML, CSS, JS)
+app.use(express.static(path.join(__dirname, "src")));
 
 const db = mysql.createConnection({
   host: "localhost",
-  user: "root",       
-  password: "123456",       
+  user: "root",
+  password: "123456",
   database: "plataforma_cursos"
 });
 
 db.connect((err) => {
-  if (err) {
-    console.error("❌ Erro ao conectar ao MySQL:", err);
-  } else {
-    console.log("✅ Conectado ao MySQL!");
-  }
+  if (err) console.error("❌ Erro ao conectar ao MySQL:", err);
+  else console.log("✅ Conectado ao MySQL!");
 });
 
-
-
 app.get("/api/materias", (req, res) => {
-  db.query("SELECT * FROM materias", (err, results) => {
-    if (err) return res.status(500).json({ erro: err });
-    res.json(results);
+  const sql = "SELECT id_materia, nome, imagem, mime_type FROM materias";
+  db.query(sql, (err, results) => {
+    if (err) return res.status(500).json({ erro: err.message });
+
+    const materias = results.map((m) => ({
+      id_materia: m.id_materia,
+      nome: m.nome,
+      imagem: m.imagem ? `data:${m.mime_type};base64,${m.imagem.toString("base64")}` : null
+    }));
+
+    res.json(materias);
   });
 });
 
-app.post("/api/materias", (req, res) => {
-  const { nome } = req.body;
-  db.query("INSERT INTO materias (nome) VALUES (?)", [nome], (err, result) => {
-    if (err) return res.status(500).json({ erro: err });
-    res.json({ id: result.insertId, nome });
+app.post("/api/materias", upload.single("imagem"), (req, res) => {
+  const nome = req.body.nome;
+  const imagem = req.file ? req.file.buffer : null;
+  const mimeType = req.file ? req.file.mimetype : null;
+
+  if (!nome || !imagem || !mimeType) {
+    return res.status(400).json({ erro: "Nome e imagem são obrigatórios" });
+  }
+
+  const sql = "INSERT INTO materias (nome, imagem, mime_type) VALUES (?, ?, ?)";
+  db.query(sql, [nome, imagem, mimeType], (err, result) => {
+    if (err) return res.status(500).json({ erro: err.message });
+    res.status(201).json({ id_materia: result.insertId, nome });
   });
 });
 
 app.get("/api/aulas", (req, res) => {
   db.query("SELECT * FROM aulas", (err, results) => {
-    if (err) return res.status(500).json({ erro: err });
+    if (err) return res.status(500).json({ erro: err.message });
     res.json(results);
   });
 });
 
 app.post("/api/aulas", (req, res) => {
   const { titulo, descricao, data_aula, id_materia } = req.body;
-  db.query(
-    "INSERT INTO aulas (titulo, descricao, data_aula, id_materia) VALUES (?, ?, ?, ?)",
-    [titulo, descricao, data_aula, id_materia],
-    (err, result) => {
-      if (err) return res.status(500).json({ erro: err });
-      res.json({ id: result.insertId, titulo });
-    }
-  );
+  const sql = "INSERT INTO aulas (titulo, descricao, data_aula, id_materia) VALUES (?, ?, ?, ?)";
+  db.query(sql, [titulo, descricao, data_aula, id_materia], (err, result) => {
+    if (err) return res.status(500).json({ erro: err.message });
+    res.json({ id: result.insertId, titulo });
+  });
 });
 
-app.get("/", (req,res) =>{
-  res.sendFile(path.join(__dirname, "index.html" ))
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "index.html"));
 });
 
 app.listen(PORT, () => {
-  console.log(`🚀 Servidor rodando em: http://localhost:8080`);
+  console.log(`🚀 Servidor rodando em: http://localhost:${PORT}`);
+});
+
+app.delete("/api/materias/:id", (req, res) => {
+  const id = req.params.id;
+  const sql = "DELETE FROM materias WHERE id_materia = ?";
+  db.query(sql, [id], (err, result) => {
+    if (err) return res.status(500).json({ erro: err.message });
+    res.json({ message: "Matéria excluída com sucesso!" });
+  });
 });
