@@ -86,33 +86,41 @@ function renderizarMaterias(materias) {
 
 async function adicionarMateria(e) {
   e.preventDefault();
-  const nomeMateria = document.querySelector('#nomeMateria').value;
-  const imagemMateria = document.querySelector('#imagemMateria').files[0];
+
+  const form = document.querySelector("#formMateria");
+  const nomeMateria = document.querySelector("#nomeMateria").value.trim();
+  const imagemMateria = document.querySelector("#imagemMateria").files[0];
 
   if (!nomeMateria || !imagemMateria) {
     alert("Preencha todos os campos!");
     return;
   }
 
+  // Cria o FormData e inclui o tipo MIME explicitamente
   const formData = new FormData();
   formData.append("nome", nomeMateria);
   formData.append("imagem", imagemMateria);
+  formData.append("tipo_mime", imagemMateria.type); // envia o mimetype junto
 
   try {
     const resposta = await fetch("/api/materias", {
       method: "POST",
       body: formData
     });
+
     if (!resposta.ok) throw new Error("Erro ao adicionar matéria");
+
     const novaMateria = await resposta.json();
+
     alert(`Matéria "${novaMateria.nome}" adicionada com sucesso!`);
     carregarMaterias();
-    form.reset();
+    window.location.href= '/';
   } catch (erro) {
     console.error("❌ Erro ao adicionar matéria:", erro);
     alert("Erro ao adicionar matéria. Verifique o console.");
   }
 }
+
 
 searchInput.addEventListener("input", () => {
   const termo = searchInput.value.toLowerCase();

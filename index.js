@@ -25,7 +25,7 @@ db.connect((err) => {
 });
 
 app.get("/api/materias", (req, res) => {
-  const sql = "SELECT id_materia, nome, imagem, mime_type FROM materias";
+  const sql = "SELECT id_materia, nome, imagem, mimetype FROM materias";
   db.query(sql, (err, results) => {
     if (err) return res.status(500).json({ erro: err.message });
 
@@ -40,17 +40,20 @@ app.get("/api/materias", (req, res) => {
 });
 
 app.post("/api/materias", upload.single("imagem"), (req, res) => {
-  const nome = req.body.nome;
-  const imagem = req.file ? req.file.buffer : null;
-  const mimeType = req.file ? req.file.mimetype : null;
+  const { nome } = req.body;
+  const imagem = req.file?.buffer;
+  const mimetype = req.file?.mimetype;
 
-  if (!nome || !imagem || !mimeType) {
+  if (!nome || !imagem || !mimetype) {
     return res.status(400).json({ erro: "Nome e imagem são obrigatórios" });
   }
 
-  const sql = "INSERT INTO materias (nome, imagem, mime_type) VALUES (?, ?, ?)";
-  db.query(sql, [nome, imagem, mimeType], (err, result) => {
-    if (err) return res.status(500).json({ erro: err.message });
+  const sql = "INSERT INTO materias (nome, imagem, mimetype) VALUES (?, ?, ?)";
+  db.query(sql, [nome, imagem, mimetype], (err, result) => {
+    if (err) {
+      console.error("Erro ao inserir matéria:", err);
+      return res.status(500).json({ erro: err.message });
+    }
     res.status(201).json({ id_materia: result.insertId, nome });
   });
 });
