@@ -37,7 +37,12 @@ CREATE TABLE eventos (
 
 INSERT INTO materias (nome, imagem, mimetype)
 VALUES
-('Matemática Básica', '', 'image/png'),
-('Programação em JavaScript', '', 'image/jpeg'),
-('História do Brasil', '', 'image/png'),
-('Inglês Intermediário', '', 'image/jpeg');
+('Português', '', 'image/png'),
+('Matemática', '', 'image/jpeg'),
+('Biologia', '', 'image/png'),
+('Química', '', 'image/jpeg'),
+('Física', '', 'image/jpeg'),
+('Inglês', '', 'image/jpeg'),
+('História', '', 'image/jpeg'),
+('Geografia', '', 'image/jpeg'),
+('Educação Física', '', 'image/jpeg');
