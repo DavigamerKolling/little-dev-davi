@@ -34,3 +34,10 @@ CREATE TABLE eventos (
     id_materia INT,
     FOREIGN KEY (id_materia) REFERENCES materias(id_materia)
 );
+
+INSERT INTO materias (nome, imagem, mimetype)
+VALUES
+('Matemática Básica', '', 'image/png'),
+('Programação em JavaScript', '', 'image/jpeg'),
+('História do Brasil', '', 'image/png'),
+('Inglês Intermediário', '', 'image/jpeg');
