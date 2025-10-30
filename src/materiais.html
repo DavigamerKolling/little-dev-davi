@@ -18,7 +18,7 @@
 
     <div class="nav-right">
       <div class="search-box">
-        <input type="text" placeholder="Pesquisar material..." class="search-input">
+        <input type="text" placeholder="Pesquisar material..." class="search-input" id="searchInputMaterial">
         <button class="search-btn">
           <img src="https://cdn-icons-png.flaticon.com/512/4078/4078029.png" alt="Buscar" class="search-icon">
         </button>
@@ -48,8 +48,8 @@
     <a href="index.html" class="voltar">&larr; Voltar</a>
     <h2>Materiais</h2>
 
-    <select class="materia-select">
-      <option selected disabled>Escolha a Matéria</option>
+    <select class="materia-select" id="materiaSelect">
+      <option selected value="">Escolha a Matéria (Filtro)</option>
       <option>Português</option>
       <option>Matemática</option>
       <option>Biologia</option>
@@ -61,34 +61,7 @@
       <option>Educação Física</option>
     </select>
 
-    <div class="materiais-lista">
-      <div class="material-card">
-        <strong>Slide 1</strong>
-        <div class="icons">
-          <i class="fa-solid fa-download"></i>
-          <i class="fa-solid fa-pen-to-square"></i>
-          <i class="fa-solid fa-trash"></i>
-        </div>
-      </div>
-
-      <div class="material-card">
-        <strong>Artigo 1</strong>
-        <div class="icons">
-          <i class="fa-solid fa-download"></i>
-          <i class="fa-solid fa-pen-to-square"></i>
-          <i class="fa-solid fa-trash"></i>
-        </div>
-      </div>
-
-      <div class="material-card">
-        <strong>Livro 1</strong>
-        <div class="icons">
-          <i class="fa-solid fa-download"></i>
-          <i class="fa-solid fa-pen-to-square"></i>
-          <i class="fa-solid fa-trash"></i>
-        </div>
-      </div>
-
+    <div class="materiais-lista" id="materiaisLista">
       <div class="material-card add-card-material" onclick="window.location.href='cadastro_material.html'">
         <span>+</span>
       </div>      
@@ -99,7 +72,12 @@
     const menuBtn = document.querySelector(".menu-btn");
     const sideMenu = document.getElementById("sideMenu");
     const overlay = document.getElementById("pageOverlay");
-  
+    const materiaisLista = document.getElementById("materiaisLista"); // Lista de cards
+    const materiaSelect = document.getElementById("materiaSelect"); // Select de filtro
+    const searchInputMaterial = document.getElementById("searchInputMaterial"); // Input de pesquisa
+
+    let materiaisCarregados = [];
+
     function openMenu() {
       sideMenu.classList.add("open");
       overlay.classList.add("show");
@@ -136,6 +114,90 @@
         closeMenu();
       }
     });
+
+    async function excluirMaterial(id, titulo) {
+      if (confirm(`Tem certeza que deseja excluir o material "${titulo}"?`)) {
+        try {
+          const resposta = await fetch(`/api/materiais/${id}`, { method: "DELETE" });
+          if (!resposta.ok) throw new Error("Erro ao excluir material");
+          alert(`Material "${titulo}" excluído com sucesso!`);
+          carregarMateriais();
+        } catch (erro) {
+          console.error("❌ Erro ao excluir material:", erro);
+          alert("Erro ao excluir material. Verifique o console.");
+        }
+      }
+    }
+
+    function renderizarMateriais(materiais) {
+      if (!materiaisLista) return;
+      
+      const cardsExistentes = materiaisLista.querySelectorAll(".material-card:not(.add-card-material)");
+      cardsExistentes.forEach(card => card.remove());
+
+      if (materiais.length === 0) {
+          const msg = document.createElement("p");
+          msg.textContent = "Nenhum material encontrado.";
+          materiaisLista.insertBefore(msg, materiaisLista.lastElementChild);
+          return;
+      }
+
+      materiais.forEach((m) => {
+        const card = document.createElement("div");
+        card.classList.add("material-card");
+        
+        card.innerHTML = `
+          <strong>${m.titulo}</strong>
+          <div class="icons">
+            <a href="/api/materiais/download/${m.id_material}" title="Download">
+              <i class="fa-solid fa-download"></i>
+            </a>
+            <i class="fa-solid fa-pen-to-square" title="Editar" onclick="window.location.href='cadastro_material.html?id=${m.id_material}'"></i> 
+            <i class="fa-solid fa-trash" title="Excluir" onclick="excluirMaterial(${m.id_material}, '${m.titulo}')"></i>
+          </div>
+        `;
+        materiaisLista.insertBefore(card, materiaisLista.lastElementChild);
+      });
+    }
+
+    async function carregarMateriais() {
+      const materiaSelecionada = materiaSelect.value;
+      let url = "/api/materiais";
+      
+      try {
+        const resposta = await fetch(url);
+        if (!resposta.ok) throw new Error("Erro ao buscar materiais");
+        materiaisCarregados = await resposta.json();
+        
+        materiaisCarregados = materiaisCarregados.map(m => ({
+            ...m, 
+            materia: m.nome_materia, 
+            professor: "Professor SENAI (fake)"
+        }));
+
+        if (materiaSelecionada && materiaSelecionada !== 'Escolha a Matéria (Filtro)') {
+            materiaisCarregados = materiaisCarregados.filter(m => m.materia === materiaSelecionada);
+        }
+
+        filtrarMateriais();
+      } catch (erro) {
+        console.error("❌ Erro ao carregar materiais:", erro);
+      }
+    }
+
+    function filtrarMateriais() {
+      const termo = searchInputMaterial.value.toLowerCase();
+      const materiaisFiltrados = materiaisCarregados.filter(m => 
+          m.titulo.toLowerCase().includes(termo) || 
+          m.materia.toLowerCase().includes(termo) ||
+          m.professor.toLowerCase().includes(termo)
+      );
+      renderizarMateriais(materiaisFiltrados);
+    }
+    
+    materiaSelect.addEventListener("change", carregarMateriais); 
+    searchInputMaterial.addEventListener("input", filtrarMateriais);
+    window.addEventListener("DOMContentLoaded", carregarMateriais);
   </script>
 </body>
 </html>

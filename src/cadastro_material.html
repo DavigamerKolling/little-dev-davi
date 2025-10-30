@@ -45,36 +45,25 @@
 
   <main class="container">
     <a href="materiais.html" class="voltar">&larr; Voltar</a>
-    <h2>Cadastro de Material</h2>
+    <h2 id="pageTitle">Cadastro de Material</h2>
 
-    <form class="form-material">
-      <input type="text" placeholder="Título" required>
+    <form class="form-material" id="formMaterial">
+      <input type="text" placeholder="Título" required name="titulo">
 
-      <select required>
-        <option disabled selected>Escolha a Matéria</option>
-        <option>Português</option>
-        <option>Matemática</option>
-        <option>Biologia</option>
-        <option>Química</option>
-        <option>Física</option>
-        <option>Inglês</option>
-        <option>História</option>
-        <option>Geografia</option>
-        <option>Educação Física</option>
+      <select required name="id_materia" id="selectMateria">
+        <option disabled selected value="">Escolha a Matéria</option>
+        </select>
+      
+      <select required name="tipo">
+        <option disabled selected value="">Escolha o Tipo</option>
+        <option value="slide">Slide</option>
+        <option value="artigo">Artigo</option>
+        <option value="livro">Livro</option>
       </select>
 
-      <input type="text" placeholder="Professor" required>
-
-      <select required>
-        <option disabled selected>Escolha a área</option>
-        <option>Exatas</option>
-        <option>Humanas</option>
-        <option>Biológicas</option>
-      </select>
-
-      <input type="text" placeholder="DD/MM/AAAA" required>
-
-      <input type="file" id="fileUpload" class="input-cinza file-input" accept=".pdf,.doc,.docx,.ppt,.pptx,.jpg,.png" required>
+      <input type="file" id="fileUpload" class="input-cinza file-input" accept=".pdf,.doc,.docx,.ppt,.pptx,.jpg,.png" name="arquivoBinario">
+      <small id="fileHelpText"></small>
+      <input type="hidden" name="arquivoExistente" id="arquivoExistente">
 
       <button type="submit" class="btn-salvar-azul">Salvar</button>
     </form>
@@ -84,7 +73,16 @@
     const menuBtn = document.querySelector(".menu-btn");
     const sideMenu = document.getElementById("sideMenu");
     const overlay = document.getElementById("pageOverlay");
-  
+    const formMaterial = document.getElementById("formMaterial");
+    const selectMateria = document.getElementById("selectMateria");
+    const pageTitle = document.getElementById("pageTitle");
+    const fileUpload = document.getElementById("fileUpload");
+    const fileHelpText = document.getElementById("fileHelpText");
+    const arquivoExistente = document.getElementById("arquivoExistente");
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const materialId = urlParams.get('id');
+
     function openMenu() {
       sideMenu.classList.add("open");
       overlay.classList.add("show");
@@ -121,6 +119,113 @@
         closeMenu();
       }
     });
+
+    async function carregarMaterias() {
+      try {
+        const resposta = await fetch("/api/materias");
+        if (!resposta.ok) throw new Error("Erro ao buscar matérias");
+        const materias = await resposta.json();
+
+        materias.forEach(m => {
+          const option = document.createElement("option");
+          option.value = m.id_materia;
+          option.textContent = m.nome;
+          selectMateria.appendChild(option);
+        });
+        
+        if (materialId) {
+            await carregarMaterialParaEdicao(materialId);
+        } else {
+            fileUpload.required = true;
+        }
+
+      } catch (erro) {
+        console.error("❌ Erro ao carregar matérias:", erro);
+        alert("Não foi possível carregar as matérias. Verifique o console.");
+      }
+    }
+
+
+    async function carregarMaterialParaEdicao(id) {
+        try {
+            const resposta = await fetch(`/api/materiais/${id}`);
+            if (!resposta.ok) throw new Error("Erro ao buscar material para edição");
+            const material = await resposta.json();
+
+           
+            pageTitle.textContent = `Edição de Material: ${material.titulo}`;
+
+            
+            formMaterial.querySelector('[name="titulo"]').value = material.titulo;
+            formMaterial.querySelector('[name="tipo"]').value = material.tipo;
+            selectMateria.value = material.id_materia; 
+
+            
+            fileUpload.required = false; 
+            fileHelpText.textContent = `Arquivo atual: ${material.arquivo}. Selecione um novo para substituir.`;
+            arquivoExistente.value = material.arquivo;
+
+        } catch (erro) {
+            console.error("❌ Erro ao carregar material:", erro);
+            alert("Erro ao carregar material para edição.");
+            window.location.href = "materiais.html"; 
+        }
+    }
+  
+
+    formMaterial.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      
+      const titulo = formMaterial.querySelector('[name="titulo"]').value;
+      const id_materia = formMaterial.querySelector('[name="id_materia"]').value;
+      const tipo = formMaterial.querySelector('[name="tipo"]').value;
+      const fileInput = formMaterial.querySelector('[name="arquivoBinario"]');
+      
+      let nomeArquivo = arquivoExistente.value; 
+
+      if (fileInput.files.length) {
+          nomeArquivo = fileInput.files[0].name; 
+      } else if (!materialId && !nomeArquivo) {
+          alert("Selecione um arquivo.");
+          return;
+      }
+
+      if (!nomeArquivo) {
+        alert("Erro: O nome do arquivo não foi determinado. Selecione um arquivo.");
+        return;
+      }
+      
+      const dadosMaterial = {
+          titulo: titulo,
+          id_materia: id_materia,
+          tipo: tipo,
+          arquivo: nomeArquivo
+      };
+
+      const method = materialId ? "PUT" : "POST";
+      const url = materialId ? `/api/materiais/${materialId}` : "/api/materiais";
+
+      try {
+        const resposta = await fetch(url, {
+          method: method,
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(dadosMaterial),
+        });
+
+        if (!resposta.ok) throw new Error(`Erro ao ${materialId ? 'atualizar' : 'cadastrar'} material`);
+
+        const resultado = await resposta.json();
+        alert(`Material "${resultado.titulo}" ${materialId ? 'atualizado' : 'cadastrado'} com sucesso!`);
+        window.location.href = "materiais.html"; 
+      } catch (erro) {
+        console.error("❌ Erro ao enviar material:", erro);
+        alert(`Erro ao ${materialId ? 'atualizar' : 'cadastrar'} material. Verifique o console.`);
+      }
+    });
+
+    window.addEventListener("DOMContentLoaded", carregarMaterias);
   </script>
 </body>
 </html>

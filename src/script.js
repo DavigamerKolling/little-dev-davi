@@ -55,7 +55,6 @@ function renderizarMaterias(materias) {
       <p>${m.nome}</p>
     `;
 
-    // Botão de excluir
     const deleteBtn = document.createElement("button");
     deleteBtn.textContent = "Excluir";
     deleteBtn.classList.add("delete-btn");
@@ -96,11 +95,10 @@ async function adicionarMateria(e) {
     return;
   }
 
-  // Cria o FormData e inclui o tipo MIME explicitamente
   const formData = new FormData();
   formData.append("nome", nomeMateria);
   formData.append("imagem", imagemMateria);
-  formData.append("tipo_mime", imagemMateria.type); // envia o mimetype junto
+  formData.append("tipo_mime", imagemMateria.type);
 
   try {
     const resposta = await fetch("/api/materias", {
